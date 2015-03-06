@@ -9,7 +9,7 @@ object SimpleClientApp extends App {
   // Override the configuration of the port
   // when specified as program argument
   if (args.nonEmpty)
-    System.setProperty("akka.remote.netty.tcp.port", args(0))
+    System.setProperty("clusterclient.akka.remote.netty.tcp.port", args(0))
 
   // Create an Akka system
   implicit val system = ActorSystem(
