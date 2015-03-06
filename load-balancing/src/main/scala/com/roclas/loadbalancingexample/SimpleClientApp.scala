@@ -17,7 +17,8 @@ object SimpleClientApp extends App {
     ConfigFactory.load.getConfig("clusterclient"))
 
   val contacts = List(
-    "akka.tcp://ClusterSystem@127.0.0.1:2551/user/receptionist")
+  "akka.tcp://ClusterSystem@127.0.0.1:2552/user/receptionist",
+  "akka.tcp://ClusterSystem@127.0.0.1:2551/user/receptionist")
 
   val initialContacts = contacts.map(system.actorSelection).toSet
 
