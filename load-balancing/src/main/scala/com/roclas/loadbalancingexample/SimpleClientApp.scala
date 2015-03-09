@@ -30,7 +30,7 @@ object SimpleClientApp extends App {
   stream.foreach(i => {
     println(s"Sending message $i")
     client ! ClusterClient.Send(
-      "/user/workingService",
+      "/user/loadWatcherService",
       s"This is request $i",
       localAffinity = true)
     Thread.sleep(1000)

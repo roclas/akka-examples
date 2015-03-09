@@ -27,11 +27,11 @@ object SimpleClusterApp extends App {
     new SimpleClusterListener(cluster)),
     "clusterListener")
 
-  val service = system.actorOf(Props(
-    new WorkingActor()),
-    "workingService")
+  val service = system.actorOf(Props[LoadWatcherActor],"loadWatcherService")
+  val service2 = system.actorOf(Props[WorkingActor],"workingService")
 
   receptionistExtension.registerService(service)
+  receptionistExtension.registerService(service2)
 
 
 }
