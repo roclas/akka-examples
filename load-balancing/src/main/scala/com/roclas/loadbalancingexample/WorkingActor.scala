@@ -23,18 +23,21 @@ class WorkingActor(cluster:Cluster)extends Actor with ActorLogging {
   }
 
 
-  def reroute(message: Any): Unit = {
-    val nodes=cluster.state.members.collect{
-        case m if m.status == MemberStatus.Up => m.address.toString
-    }.map(context.actorSelection(_)).toSeq
-    val receiver=nodes(random.nextInt(nodes.length))
-    log.info(s"working reroutes message: $message to $receiver")
-    receiver ! message
+  def reroute(message: String): Unit = {
+    val n=cluster.state.members.collect{
+        case m if m.status == MemberStatus.Up => s"${m.address}/user/workingService"
+    }.toSeq
+    val receiver=n(random.nextInt(n.length))
+    log.info(s"\n\nworking reroutes message: $message to $receiver\n\n")
+    context.actorSelection(receiver) ! reroutedMessage(message)
   }
 
   def receive = {
     //CLIENT MESSAGES
-    case msg => {
+    case reroutedMessage(m) => {
+      log.info(s"\n\n\n\n\nconsumming message $m\n\n\n\n\n")
+    }
+    case msg:String => {
       log.info(s"working actor receives message: $msg from $sender")
       reroute(msg)
     }
