@@ -27,8 +27,8 @@ class WorkingActor(cluster:Cluster)extends Actor with ActorLogging {
     val nodes=cluster.state.members.collect{
         case m if m.status == MemberStatus.Up => m.address.toString
     }.map(context.actorSelection(_)).toSeq
-    log.info(s"working reroutes message: $message to $receiver")
     val receiver=nodes(random.nextInt(nodes.length))
+    log.info(s"working reroutes message: $message to $receiver")
     receiver ! message
   }
 
