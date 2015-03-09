@@ -2,17 +2,15 @@ package com.roclas.loadbalancingexample
 
 import java.lang.management.ManagementFactory
 import javax.management.{Attribute, AttributeList, MBeanServer, ObjectName}
-import scala.concurrent.duration._
 
-import akka.actor.{Props, Actor, ActorLogging}
-import scala.concurrent.ExecutionContext.Implicits.global
+import akka.actor.{Actor, ActorLogging, Props}
 
 object LoadWatcherActor{
   def props(): Props = Props(new LoadWatcherActor())
 }
 
 class LoadWatcherActor extends Actor with ActorLogging {
-  context.system.scheduler.schedule(1 second,2 seconds,self,"watchload")
+  //context.system.scheduler.schedule(1 second,2 seconds,self,"watchload")
 
   def watchLoad():Double={
     val mbs:MBeanServer= ManagementFactory.getPlatformMBeanServer()

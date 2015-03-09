@@ -1,6 +1,7 @@
 package com.roclas.loadbalancingexample
 
-import akka.actor.{Props, Actor, ActorLogging}
+import akka.actor.{Actor, ActorLogging, Props}
+import akka.cluster.{MemberStatus, Cluster}
 
 
 object WorkingActor{
@@ -18,10 +19,20 @@ class WorkingActor extends Actor with ActorLogging {
     0
   }
 
+
+  def reroute(value: Any): Unit = {
+    val nodes=Cluster(context.system).state.members.collect{
+        case m if m.status == MemberStatus.Up => m.address
+    }
+    println(s"nodes=$nodes")
+  }
+
   def receive = {
     //CLIENT MESSAGES
     case msg => {
       log.info(s"working actor receives message: $msg")
+      reroute(msg)
+      
     }
   }
 }
