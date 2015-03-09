@@ -17,8 +17,7 @@ object SimpleClusterApp extends App {
     "ClusterSystem",
     ConfigFactory.load.getConfig("clusterserver"))
 
-  val cluster: Cluster =
-    Cluster(system)
+  val cluster: Cluster =Cluster(system)
 
   val receptionistExtension: ClusterReceptionistExtension =
     ClusterReceptionistExtension(system)
@@ -28,8 +27,7 @@ object SimpleClusterApp extends App {
     "clusterListener")
 
   val service = system.actorOf(Props[LoadWatcherActor],"loadWatcherService")
-  val service2 = system.actorOf(Props[WorkingActor],"workingService")
-
+  val service2 = system.actorOf(WorkingActor.props(cluster) ,"workingService")
   receptionistExtension.registerService(service)
   receptionistExtension.registerService(service2)
 
